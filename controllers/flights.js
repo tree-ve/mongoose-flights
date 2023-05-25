@@ -1,5 +1,7 @@
 const Flight = require('../models/flight');
-// Flight.collection.drop();
+// !
+// ! Flight.collection.drop();
+// !
 module.exports = {
   index,
   show,
@@ -45,6 +47,7 @@ async function create(req, res) {
   }
   try {
     await Flight.create(req.body);
+    console.log('FIRST LOG ->', req.body)
     res.redirect('/flights');  // Update this line
   } catch (err) {
     // Typically some sort of validation error

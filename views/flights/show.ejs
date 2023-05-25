@@ -7,11 +7,11 @@
           <li><%= key[0].toUpperCase() + key.substring(1) %>: <%= flight[key] %></li>
         <% } %>
       <% } %>
-      <li>Destination: <%= flight.destination %></li>
-      <li>Arrives: <%= flight.destination %></li>
+      <li>Destination: <%= flight.destinations.airport %></li>
+      <li>Arrives: <%= flight.destinations.arrival %></li>
 </section>
 
-<br><br><h2>Reviews</h2>
+<br><br><h2>Arrival Information</h2>
 <form id="add-arrival-form" method="POST" action="/flights/<%= flight._id %>/destinations">
   <label>Destination:
     <select name="airport">

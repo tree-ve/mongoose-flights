@@ -9,12 +9,12 @@ const destinationSchema = new Schema({
     },
     arrival: {
         type: Date,
-        default: function() {
-            newDt = new Date()
-            let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay() + 1, newDt.getHours(), newDt.getMinutes())
-            // return `${newDt.getFullYear() + 1}-${newDt.toLocaleString('default', { month: 'long' })}-${newDt.getDate()}`
-            return defaultDate
-        },
+        required: true,
+        // default: function() {
+        //     newDt = new Date()
+        //     let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay() + 1, newDt.getHours(), newDt.getMinutes())
+        //     return defaultDate
+        // },
     }
   }, {
     timestamps: true
@@ -38,12 +38,13 @@ const flightSchema = new Schema({
     },
     departs: {
         type: Date,
-        default: function() {
-            newDt = new Date()
-            let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay(), newDt.getHours(), newDt.getMinutes())
-            // return `${newDt.getFullYear() + 1}-${newDt.toLocaleString('default', { month: 'long' })}-${newDt.getDate()}`
-            return defaultDate
-        },
+        required: true,
+        // default: function() {
+        //     newDt = new Date()
+        //     let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay(), newDt.getHours(), newDt.getMinutes())
+        //     // return `${newDt.getFullYear() + 1}-${newDt.toLocaleString('default', { month: 'long' })}-${newDt.getDate()}`
+        //     return defaultDate
+        // },
     },
     destinations: [destinationSchema]
 }, {
