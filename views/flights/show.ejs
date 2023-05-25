@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<h1><%= title %></h1>
+<section id="show-page">
+    <% for(const key in flight){ %>
+        <% if(key !== '_id' && key !== '__v' && key !== 'destinations'){ %>
+          <li><%= key[0].toUpperCase() + key.substring(1) %>: <%= flight[key] %></li>
+        <% } %>
+      <% } %>
+      <li>Destination: <%= flight.destination %></li>
+      <li>Arrives: <%= flight.destination %></li>
+</section>
+
+<br><br><h2>Reviews</h2>
+<form id="add-arrival-form" method="POST" action="/flights/<%= flight._id %>/destinations">
+  <label>Destination:
+    <select name="airport">
+        <option value="AUS">AUS</option>
+        <option value="DFW">DFW</option>
+        <option value="DEN">DEN</option>
+        <option value="LAX">LAX</option>
+        <option value="SAN">SAN</option>
+    </select>
+  </label><br>
+  <label>Arrives:
+    <input type="datetime-local" name="arrival" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}">
+  </label><br>
+  <input type="submit" value="Add Arrival Info">
+</form>
+  
+<%- include('../partials/footer') %>
