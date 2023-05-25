@@ -1,11 +1,25 @@
 const mongoose = require('mongoose');
 // optional shortcut to the mongoose.Schema class
 const Schema = mongoose.Schema;
-// const currentDate = Date.now();
-// function getDefaultDate(date) {
-//     const defaultDate = new Date(date.setFullYear(date.getFullYear(0) + 1));
-//     return defaultDate;
-// }
+
+const destinationSchema = new Schema({
+    airport: {
+        type: String,
+        enum: ['AUS', 'DFW', 'DEN', 'LAX', 'SAN'],
+    },
+    arrival: {
+        type: Date,
+        default: function() {
+            newDt = new Date()
+            let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay() + 1, newDt.getHours(), newDt.getMinutes())
+            // return `${newDt.getFullYear() + 1}-${newDt.toLocaleString('default', { month: 'long' })}-${newDt.getDate()}`
+            return defaultDate
+        },
+    }
+  }, {
+    timestamps: true
+  });
+
 
 const flightSchema = new Schema({
     airline: {
@@ -19,15 +33,19 @@ const flightSchema = new Schema({
     flightNo: {
         type: Number,
         min: 10,
-        max: 9999
+        max: 9999,
+        required: true
     },
     departs: {
         type: Date,
-        // default: getDefaultDate(Date)
         default: function() {
-            return new Date(); // ! STILL NEED TO ADD 1
+            newDt = new Date()
+            let defaultDate = new Date(newDt.getFullYear() + 1, newDt.getMonth(), newDt.getDay(), newDt.getHours(), newDt.getMinutes())
+            // return `${newDt.getFullYear() + 1}-${newDt.toLocaleString('default', { month: 'long' })}-${newDt.getDate()}`
+            return defaultDate
         },
-    }
+    },
+    destinations: [destinationSchema]
 }, {
     timestamps: true
 });

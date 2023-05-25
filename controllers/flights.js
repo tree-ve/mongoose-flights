@@ -1,7 +1,8 @@
 const Flight = require('../models/flight');
-
+// Flight.collection.drop();
 module.exports = {
   index,
+  show,
   new: newFlight,
   create
 };
@@ -11,29 +12,43 @@ async function index(req, res) {
   res.render('flights/index', { flights });
 }
 
-function newFlight(req, res) {
-  // const newFlight = new Flight();
-  const dt = newFlight.departs;
-  let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
-  departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
-  res.render('flights/new', { departsDate });
-  // We'll want to be able to render an  
-  // errorMsg if the create action fails
-  res.render('flights/new', { errorMsg: '' });
+async function show(req,res) {
+  const { id } = req.params
+  const flight = await Flight.findById(id);
+  res.render('flights/show', {
+    title: 'Flight Details',
+    flight: flight.toObject()
+  });
+}
+
+async function newFlight(req, res) {
+  try {
+    const newFlight = await new Flight();
+    const dt = newFlight.departs;
+    let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
+    departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
+    res.render('flights/new', { departsDate, errorMsg: '' });
+
+    // console.log('DEPARTURE DATE ->', departsDate);
+    // let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
+    // departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
+    // res.render('flights/new', { departsDate })
+  } catch (err) {
+    console.log('ERROR MESSAGE ->', err.message);
+    res.render('flights/new', { errorMsg: '' })
+  }
 }
 
 async function create(req, res) {
-    for (let key in req.body) {
-       if (req.body[key] === '') delete req.body[key];
-    }
-    try {
-        await Flight.create(req.body);
-        // Always redirect after CUDing data
-        // We'll refactor to redirect to the flights index after we implement it
-        res.redirect('/flights');  // Update this line
-    } catch (err) {
-        // Typically some sort of validation error
-        console.log(err);
-        res.render('flights/new', { errorMsg: err.message });
-    }
+  for (let key in req.body) {
+    if (req.body[key] === '') delete req.body[key];
+  }
+  try {
+    await Flight.create(req.body);
+    res.redirect('/flights');  // Update this line
+  } catch (err) {
+    // Typically some sort of validation error
+    console.log(err);
+    res.render('flights/new', { errorMsg: err.message });
+  }
 }
