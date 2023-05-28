@@ -1,19 +1,22 @@
 const Flight = require('../models/flight');
 
 module.exports = {
-  create
+  create,
+  // update
 };
 
 async function create(req, res) {
   const flight = await Flight.findById(req.params.id);
   // We can push (or unshift) subdocs into Mongoose arrays
   // const body = req.body
-  console.log('FIRST LOG ->', req.body)
+  // console.log('FIRST DESTINATIONS CNTRL LOG ->', req.body.arrival, req.body.airport)
   // console.log('SECOND LOG ->', destinations)
+  // const sortTest = await Flight.find(req.body).sort('arrival');
+  // console.log('SORT TEST ->', sortTest)
+  flight.destinations.push(req.body);
   try {
     // Save any changes made to the flight doc
     await flight.save();
-    flight.destinations.push(req.body);
     res.redirect(`/flights/${flight._id}`);
   } catch (err) {
     console.log('ERROR MESSAGE ->', err);

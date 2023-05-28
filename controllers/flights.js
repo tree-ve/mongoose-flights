@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket')
 // !
 // ! Flight.collection.drop();
 // !
@@ -10,16 +11,31 @@ module.exports = {
 };
 
 async function index(req, res) {
-  const flights = await Flight.find({});
+  const flights = await Flight.find({}).sort('departs');
   res.render('flights/index', { flights });
 }
 
 async function show(req,res) {
   const { id } = req.params
   const flight = await Flight.findById(id);
+  const tickets = await Ticket.find({flight: flight._id});
+  console.log('flight cntrl ticket -> ', tickets)
+  // console.log('Destinations ->', flight)
+  // let destLength = flight.toObject().destinations.length
+  // let destArr = []
+  // for (i = 0; i < destLength; i++) {
+  //   console.log(flight.toObject().destinations[i].airport);
+  //   destArr.push(flight.toObject().destinations[i].airport);
+  // }
+  // console.log(destArr);
+  // console.log(flight.toObject().destinations[1]);
+  // const destinations = await Flight.find({ flight: { $nin: flight.destinations } } ).sort('arrival');
+  // console.log('DESTINATIONS ->', destinations)
   res.render('flights/show', {
     title: 'Flight Details',
-    flight: flight.toObject()
+    flight: flight.toObject(),
+    tickets: tickets
+    // destinations: flight.destinations,
   });
 }
 
@@ -47,7 +63,7 @@ async function create(req, res) {
   }
   try {
     await Flight.create(req.body);
-    console.log('FIRST LOG ->', req.body)
+    console.log('FIRST FLIGHT CNTRL LOG ->', req.body)
     res.redirect('/flights');  // Update this line
   } catch (err) {
     // Typically some sort of validation error
