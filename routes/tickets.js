@@ -10,6 +10,7 @@ router.get('/flights/:id/tickets/new', ticketsCtrl.new);
 // POST /tickets (create functionality)
 // router.post('/tickets', ticketsCtrl.create);
 router.post('/tickets/:id', ticketsCtrl.create);
+// router.post('/flights/:id/tickets/new', ticketsCtrl.create);
 
 // POST /flights/:id/tickets (associate a ticket with a flight)
 // router.post('/tickets/:id', ticketsCtrl.addTicket);

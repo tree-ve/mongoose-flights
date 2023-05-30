@@ -41,11 +41,13 @@ async function newTicket(req, res) {
 async function create(req, res) {
   try {
     console.log('ticket ->', req.body);
+    console.log('req.params.id', req.params.id)
     const flight = await Flight.findById(req.params.id);
-    console.log(tickets);
+    console.log(flight);
     console.log('flight ->', flight._id);
     console.log('CREATE FUNCTION');
     console.log('');
+    console.log(Ticket, req.body);
     await Ticket.create(req.body);
     res.redirect(`../flights/${flight._id}`);
   } catch (err) {
